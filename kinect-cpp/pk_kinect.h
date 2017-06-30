@@ -1,8 +1,8 @@
 #ifndef _PK_KINECT
 #define _PK_KINECT
 
-#define WIDTH 1920
-#define HEIGHT 1080
+#define COLOR_WIDTH 1920
+#define COLOR_HEIGHT 1080
 
 #include <Windows.h>
 #include <Ole2.h>
@@ -16,13 +16,17 @@ class Kinect
 
 	private:
 	IKinectSensor* sensor;
-	IColorFrameReader* reader;
+	IMultiSourceFrame* frame;
+	IMultiSourceFrameReader* reader;
+	ICoordinateMapper* mapper;
 
 	public:
 	Kinect();
 	~Kinect();
 	bool initialize();
-	bool fetchRGBA(GLubyte* buffer);
+	bool fetch();
+	void getRgba(GLubyte* buffer);
+	void getDepth(GLubyte* buffer);
 
 };
 

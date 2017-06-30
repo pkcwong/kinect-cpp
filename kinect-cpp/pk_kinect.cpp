@@ -13,45 +13,32 @@ Kinect::~Kinect()
 
 bool Kinect::initialize()
 {
-	HRESULT hr = GetDefaultKinectSensor(&this->sensor);
-	if (this->sensor)
+	if (SUCCEEDED(GetDefaultKinectSensor(&this->sensor)))
 	{
-		IColorFrameSource* framesource = NULL;
-		if (SUCCEEDED(hr))
-		{
-			hr = this->sensor->Open();
-		}
-		if (SUCCEEDED(hr))
-		{
-			hr = this->sensor->get_ColorFrameSource(&framesource);
-		}
-		if (SUCCEEDED(hr))
-		{
-			hr = framesource->OpenReader(&this->reader);
-		}
-		framesource->Release();
+		this->sensor->get_CoordinateMapper(&this->mapper);
+		this->sensor->Open();
+		this->sensor->OpenMultiSourceFrameReader(FrameSourceTypes::FrameSourceTypes_Depth | FrameSourceTypes::FrameSourceTypes_Color, &this->reader);
+		return true;
 	}
-	if (!this->sensor || FAILED(hr))
-	{
-		return false;
-	}
-	return true;
+	return false;
 }
 
-bool Kinect::fetchRGBA(GLubyte* buffer)
+bool Kinect::fetch()
 {
-	IColorFrame* colorframe = NULL;
-	HRESULT hr;
-	if (!this->reader)
+	if (SUCCEEDED(this->reader->AcquireLatestFrame(&this->frame)))
 	{
-		return false;
+		return true;
 	}
-	hr = this->reader->AcquireLatestFrame(&colorframe);
-	if (FAILED(hr))
-	{
-		return false;
-	}
-	colorframe->CopyConvertedFrameDataToArray(WIDTH * HEIGHT * 4, buffer, ColorImageFormat_Bgra);
-	colorframe->Release();
-	return true;
+	return false;
+}
+
+void Kinect::getRgba(GLubyte* buffer)
+{
+	IColorFrame* color = NULL;
+	IColorFrameReference* colorRef = NULL;
+	this->frame->get_ColorFrameReference(&colorRef);
+	colorRef->AcquireFrame(&color);
+	color->CopyConvertedFrameDataToArray(COLOR_WIDTH * COLOR_HEIGHT * 4, buffer, ColorImageFormat_Bgra);
+	colorRef->Release();
+	color->Release();
 }
