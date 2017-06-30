@@ -22,7 +22,7 @@ class Kinect
 	Kinect();
 	~Kinect();
 	bool initialize();
-	bool fetchRGB(GLubyte* buffer);
+	bool fetchRGBA(GLubyte* buffer);
 
 };
 

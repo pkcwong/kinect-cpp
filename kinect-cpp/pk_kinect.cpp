@@ -14,14 +14,13 @@ Kinect::~Kinect()
 bool Kinect::initialize()
 {
 	HRESULT hr = GetDefaultKinectSensor(&this->sensor);
-	if (FAILED(hr))
-	{
-		return hr;
-	}
 	if (this->sensor)
 	{
 		IColorFrameSource* framesource = NULL;
-		hr = this->sensor->Open();
+		if (SUCCEEDED(hr))
+		{
+			hr = this->sensor->Open();
+		}
 		if (SUCCEEDED(hr))
 		{
 			hr = this->sensor->get_ColorFrameSource(&framesource);
@@ -39,17 +38,20 @@ bool Kinect::initialize()
 	return true;
 }
 
-bool Kinect::fetchRGB(GLubyte* buffer)
+bool Kinect::fetchRGBA(GLubyte* buffer)
 {
-	IColorFrame* frame = NULL;
-	if (SUCCEEDED(reader->AcquireLatestFrame(&frame)))
+	IColorFrame* colorframe = NULL;
+	HRESULT hr;
+	if (!this->reader)
 	{
-		if (frame)
-		{
-			frame->CopyConvertedFrameDataToArray(WIDTH * HEIGHT * 4, buffer, ColorImageFormat_Bgra);
-			frame->Release();
-			return true;
-		}
+		return false;
 	}
-	return false;
+	hr = this->reader->AcquireLatestFrame(&colorframe);
+	if (FAILED(hr))
+	{
+		return false;
+	}
+	colorframe->CopyConvertedFrameDataToArray(WIDTH * HEIGHT * 4, buffer, ColorImageFormat_Bgra);
+	colorframe->Release();
+	return true;
 }
