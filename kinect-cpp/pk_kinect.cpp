@@ -3,7 +3,9 @@
 Kinect::Kinect()
 {
 	this->sensor = NULL;
+	this->frame = NULL;
 	this->reader = NULL;
+	this->mapper = NULL;
 }
 
 Kinect::~Kinect()
@@ -41,4 +43,13 @@ void Kinect::getRgba(GLubyte* buffer)
 	color->CopyConvertedFrameDataToArray(COLOR_WIDTH * COLOR_HEIGHT * 4, buffer, ColorImageFormat_Bgra);
 	colorRef->Release();
 	color->Release();
+}
+
+void Kinect::getDepth(GLubyte* buffer)
+{
+	IDepthFrame* depth = NULL;
+	IDepthFrameReference* depthRef = NULL;
+	this->frame->get_DepthFrameReference(&depthRef);
+	depthRef->AcquireFrame(&depth);
+	
 }
