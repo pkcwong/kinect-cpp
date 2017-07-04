@@ -51,5 +51,4 @@ void Kinect::getDepth(GLubyte* buffer)
 	IDepthFrameReference* depthRef = NULL;
 	this->frame->get_DepthFrameReference(&depthRef);
 	depthRef->AcquireFrame(&depth);
-	
 }
