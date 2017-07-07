@@ -2,6 +2,7 @@
 
 #include <opencv2/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
+#include <gl/GL.h>
 
 GLubyte data[COLOR_WIDTH * COLOR_HEIGHT * 4];
 
@@ -16,7 +17,7 @@ int main(int argc, char* argv[])
 		if (status)
 		{
 			kinect->getRgba(data);
-			cv::Mat img = cv::Mat(COLOR_HEIGHT, COLOR_WIDTH, CV_8UC4, data).clone();
+			cv::Mat img = cv::Mat(COLOR_HEIGHT, COLOR_WIDTH, CV_8UC4, data);
 			cv::imshow("Kinect", img);
 		}
 		cv::waitKey(30);

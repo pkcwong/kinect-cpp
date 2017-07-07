@@ -11,8 +11,6 @@
 
 #include <Kinect.h>
 
-#include <gl/GL.h>
-
 class Kinect
 {
 
@@ -27,8 +25,8 @@ class Kinect
 	~Kinect();
 	bool initialize();
 	bool fetch();
-	void getRgba(GLubyte* buffer);
-	void getDepth(GLubyte* buffer);
+	void getRgba(BYTE* buffer);
+	void getDepth(USHORT* buffer);
 
 };
 

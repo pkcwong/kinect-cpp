@@ -34,21 +34,24 @@ bool Kinect::fetch()
 	return false;
 }
 
-void Kinect::getRgba(GLubyte* buffer)
+void Kinect::getRgba(BYTE* buffer)
 {
 	IColorFrame* color = NULL;
 	IColorFrameReference* colorRef = NULL;
 	this->frame->get_ColorFrameReference(&colorRef);
-	colorRef->AcquireFrame(&color);
-	color->CopyConvertedFrameDataToArray(COLOR_WIDTH * COLOR_HEIGHT * 4, buffer, ColorImageFormat_Bgra);
-	colorRef->Release();
-	color->Release();
+	if (SUCCEEDED(colorRef->AcquireFrame(&color)))
+	{
+		color->CopyConvertedFrameDataToArray(COLOR_WIDTH * COLOR_HEIGHT * 4, buffer, ColorImageFormat_Bgra);
+		colorRef->Release();
+		color->Release();
+	}
 }
 
-void Kinect::getDepth(GLubyte* buffer)
+void Kinect::getDepth(USHORT* buffer)
 {
 	IDepthFrame* depth = NULL;
 	IDepthFrameReference* depthRef = NULL;
 	this->frame->get_DepthFrameReference(&depthRef);
 	depthRef->AcquireFrame(&depth);
+	depth->CopyFrameDataToArray(DEPTH_WIDTH * DEPTH_HEIGHT, buffer);
 }
