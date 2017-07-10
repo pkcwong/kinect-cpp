@@ -52,6 +52,10 @@ void Kinect::getDepth(USHORT* buffer)
 	IDepthFrame* depth = NULL;
 	IDepthFrameReference* depthRef = NULL;
 	this->frame->get_DepthFrameReference(&depthRef);
-	depthRef->AcquireFrame(&depth);
-	depth->CopyFrameDataToArray(DEPTH_WIDTH * DEPTH_HEIGHT, buffer);
+	if (SUCCEEDED(depthRef->AcquireFrame(&depth)))
+	{
+		depth->CopyFrameDataToArray(DEPTH_WIDTH * DEPTH_HEIGHT, buffer);
+		depthRef->Release();
+		depth->Release();
+	}
 }
