@@ -19,7 +19,7 @@ bool Kinect::initialize()
 	{
 		this->sensor->get_CoordinateMapper(&this->mapper);
 		this->sensor->Open();
-		this->sensor->OpenMultiSourceFrameReader(FrameSourceTypes::FrameSourceTypes_Depth | FrameSourceTypes::FrameSourceTypes_Color, &this->reader);
+		this->sensor->OpenMultiSourceFrameReader(FrameSourceTypes::FrameSourceTypes_Depth | FrameSourceTypes::FrameSourceTypes_Color | FrameSourceTypes_Infrared, &this->reader);
 		return true;
 	}
 	return false;
@@ -57,5 +57,18 @@ void Kinect::getDepth(USHORT* buffer)
 		depth->CopyFrameDataToArray(DEPTH_WIDTH * DEPTH_HEIGHT, buffer);
 		depthRef->Release();
 		depth->Release();
+	}
+}
+
+void Kinect::getIR(USHORT* buffer)
+{
+	IInfraredFrame* IR = NULL;
+	IInfraredFrameReference* IRRef = NULL;
+	this->frame->get_InfraredFrameReference(&IRRef);
+	if (SUCCEEDED(IRRef->AcquireFrame(&IR)))
+	{
+		IR->CopyFrameDataToArray(IR_WIDTH * IR_HEIGHT, buffer);
+		IRRef->Release();
+		IR->Release();
 	}
 }

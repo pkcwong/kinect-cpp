@@ -8,7 +8,7 @@
 #include <opencv2/imgproc/imgproc.hpp>
 #include <gl/GL.h>
 
-GLubyte data[COLOR_WIDTH * COLOR_HEIGHT * 4];
+USHORT data[IR_WIDTH * IR_HEIGHT];
 
 int main(int argc, char* argv[])
 {
@@ -16,17 +16,19 @@ int main(int argc, char* argv[])
 	kinect.initialize();
 	cv::namedWindow("Kinect");
 	while (!kinect.fetch());
-	kinect.getRgba(data);
-	cv::Mat img(COLOR_HEIGHT, COLOR_WIDTH, CV_8UC4, data);
+	while (1) {
 
-	cv::cvtColor(img, img, CV_BGR2GRAY);
+		kinect.getIR(data);
+		cv::Mat img(IR_HEIGHT, IR_WIDTH, CV_8UC2, data);
+		cv::imshow("Kinect", img);
+	}
+	//cv::cvtColor(img, img, CV_BGR2GRAY);
 
-	cv::SiftFeatureDetector detector;
-	std::vector<cv::KeyPoint> keypoints;
-	detector.detect(img, keypoints);
+	//cv::SiftFeatureDetector detector;
+	//std::vector<cv::KeyPoint> keypoints;
+	//detector.detect(img, keypoints);
 
-	cv::drawKeypoints(img, keypoints, img);
+	//cv::drawKeypoints(img, keypoints, img);
 
-	cv::imshow("Kinect", img);
-	cv::waitKey(0);
+	cv::waitKey(20);
 }

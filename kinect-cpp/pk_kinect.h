@@ -5,6 +5,8 @@
 #define COLOR_HEIGHT 1080
 #define DEPTH_WIDTH 512
 #define DEPTH_HEIGHT 424
+#define IR_WIDTH 512
+#define IR_HEIGHT 424
 
 #include <Windows.h>
 #include <Ole2.h>
@@ -27,6 +29,7 @@ class Kinect
 	bool fetch();
 	void getRgba(BYTE* buffer);
 	void getDepth(USHORT* buffer);
+	void getIR(USHORT* buffer);
 
 };
 
