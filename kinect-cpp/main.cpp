@@ -21,9 +21,11 @@ int main(int argc, char* argv[])
 	while (1) {
 
 		kinect.getDepth(depth);
+		/*
 		for (int i = 0; i < DEPTH_WIDTH * DEPTH_HEIGHT; i++) {
 			depth[i] = (depth[i] * 256) % 32768;
 			}
+			*/
 		cv::Mat img(DEPTH_HEIGHT,DEPTH_WIDTH, CV_16U, depth);
 		cv::imshow("Kinect", img);
 		cv::waitKey(30);
