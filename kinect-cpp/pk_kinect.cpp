@@ -34,6 +34,7 @@ bool Kinect::fetch()
 	return false;
 }
 
+// get RGBA image, 8 bit
 void Kinect::getRgba(BYTE* buffer)
 {
 	IColorFrame* color = NULL;
@@ -47,6 +48,7 @@ void Kinect::getRgba(BYTE* buffer)
 	}
 }
 
+// get depth image, 16 bit
 void Kinect::getDepth(USHORT* buffer)
 {
 	IDepthFrame* depth = NULL;
@@ -57,9 +59,12 @@ void Kinect::getDepth(USHORT* buffer)
 		depth->CopyFrameDataToArray(DEPTH_WIDTH * DEPTH_HEIGHT, buffer);
 		depthRef->Release();
 		depth->Release();
+		depthRef = nullptr;
+		depth = nullptr;
 	}
 }
 
+//get IR image
 void Kinect::getIR(USHORT* buffer)
 {
 	IInfraredFrame* IR = NULL;
@@ -70,5 +75,7 @@ void Kinect::getIR(USHORT* buffer)
 		IR->CopyFrameDataToArray(IR_WIDTH * IR_HEIGHT, buffer);
 		IRRef->Release();
 		IR->Release();
+		IRRef = nullptr;
+		IR = nullptr;
 	}
 }

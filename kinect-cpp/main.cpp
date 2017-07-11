@@ -8,7 +8,9 @@
 #include <opencv2/imgproc/imgproc.hpp>
 #include <gl/GL.h>
 
-USHORT data[IR_WIDTH * IR_HEIGHT];
+USHORT IR[IR_WIDTH * IR_HEIGHT];
+USHORT depth[DEPTH_WIDTH * DEPTH_HEIGHT];
+USHORT color[COLOR_WIDTH * COLOR_HEIGHT];
 
 int main(int argc, char* argv[])
 {
@@ -18,9 +20,13 @@ int main(int argc, char* argv[])
 	while (!kinect.fetch());
 	while (1) {
 
-		kinect.getIR(data);
-		cv::Mat img(IR_HEIGHT, IR_WIDTH, CV_8UC2, data);
+		kinect.getDepth(depth);
+		for (int i = 0; i < DEPTH_WIDTH * DEPTH_HEIGHT; i++) {
+			depth[i] = (depth[i] * 256) % 32768;
+			}
+		cv::Mat img(DEPTH_HEIGHT,DEPTH_WIDTH, CV_16U, depth);
 		cv::imshow("Kinect", img);
+		cv::waitKey(30);
 	}
 	//cv::cvtColor(img, img, CV_BGR2GRAY);
 
@@ -30,5 +36,5 @@ int main(int argc, char* argv[])
 
 	//cv::drawKeypoints(img, keypoints, img);
 
-	cv::waitKey(20);
+	//cv::waitKey(20);
 }
