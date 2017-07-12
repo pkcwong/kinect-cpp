@@ -21,15 +21,18 @@ class Kinect
 	IMultiSourceFrame* frame;
 	IMultiSourceFrameReader* reader;
 	ICoordinateMapper* mapper;
+	BYTE* colorData;
+	USHORT* depthData;
+	USHORT* irData;
 
 	public:
 	Kinect();
 	~Kinect();
 	bool initialize();
 	bool fetch();
-	void getRgba(BYTE* buffer);
-	void getDepth(USHORT* buffer);
-	void getIR(USHORT* buffer);
+	BYTE* getRgba();
+	USHORT* getDepth();
+	USHORT* getIr();
 
 };
 
