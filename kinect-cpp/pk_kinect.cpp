@@ -1,4 +1,7 @@
 #include "pk_kinect.h"
+#include <iostream>
+
+
 
 Kinect::Kinect()
 {
@@ -78,4 +81,21 @@ void Kinect::getIR(USHORT* buffer)
 		IRRef = nullptr;
 		IR = nullptr;
 	}
+}
+void Kinect::depth2xyz() {
+
+	IDepthFrame* depthframe;
+	unsigned int sz;
+	unsigned short* buf;
+
+	depthframe->AccessUnderlyingBuffer(&sz, &buf);
+
+	mapper->MapDepthFrameToCameraSpace(DEPTH_WIDTH*DEPTH_HEIGHT, buf, DEPTH_WIDTH*DEPTH_HEIGHT, depth2xyz);
+
+	for (int i = 0; i < DEPTH_WIDTH*DEPTH_HEIGHT; i++) {
+		std::cout << buf[i] << "  ";
+		//std::cout << (int)depth2xyz[i] << std::endl;
+	}
+
+
 }

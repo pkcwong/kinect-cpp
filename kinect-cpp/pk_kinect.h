@@ -21,6 +21,10 @@ class Kinect
 	IMultiSourceFrame* frame;
 	IMultiSourceFrameReader* reader;
 	ICoordinateMapper* mapper;
+	float X, Y, Z;
+	//IDepthFrame* depthframe;
+	CameraSpacePoint depth2xyz[DEPTH_WIDTH*DEPTH_HEIGHT];
+
 
 	public:
 	Kinect();
@@ -30,6 +34,7 @@ class Kinect
 	void getRgba(BYTE* buffer);
 	void getDepth(USHORT* buffer);
 	void getIR(USHORT* buffer);
+	void depth2xyz();
 
 };
 
