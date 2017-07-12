@@ -1,42 +1,34 @@
 #include "pk_kinect.h"
 
-#include <opencv2/core.hpp>
-#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/core/core.hpp>
 #include <opencv2/features2d/features2d.hpp>
+#include <opencv2/highgui/highgui.hpp>
 #include <opencv2/calib3d/calib3d.hpp>
 #include <opencv2/nonfree/nonfree.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2\video\video.hpp>
 #include <gl/GL.h>
 
-USHORT IR[IR_WIDTH * IR_HEIGHT];
-USHORT depth[DEPTH_WIDTH * DEPTH_HEIGHT];
-USHORT color[COLOR_WIDTH * COLOR_HEIGHT];
+GLubyte data[COLOR_WIDTH * COLOR_HEIGHT * 4];
 
 int main(int argc, char* argv[])
 {
 	Kinect kinect;
-	kinect.initialize();
+	cv::BackgroundSubtractorMOG2 mog2;
 	cv::namedWindow("Kinect");
-	while (!kinect.fetch());
-	while (1) {
-
-		kinect.getDepth(depth);
-		/*
-		for (int i = 0; i < DEPTH_WIDTH * DEPTH_HEIGHT; i++) {
-			depth[i] = (depth[i] * 256) % 32768;
-			}
-			*/
-		cv::Mat img(DEPTH_HEIGHT,DEPTH_WIDTH, CV_16U, depth);
-		cv::imshow("Kinect", img);
+	kinect.initialize();
+	while (1)
+	{
+		if (kinect.fetch())
+		{
+			kinect.getRgba(data);
+			cv::Mat frame(COLOR_HEIGHT, COLOR_WIDTH, CV_8UC4, data);
+			cv::Mat gray;
+			cv::Mat mask;
+			cv::cvtColor(frame, gray, CV_BGRA2GRAY);
+			mog2(gray, mask, 0.01);
+			cv::imshow("Kinect", mask);
+		}
 		cv::waitKey(30);
 	}
-	//cv::cvtColor(img, img, CV_BGR2GRAY);
-
-	//cv::SiftFeatureDetector detector;
-	//std::vector<cv::KeyPoint> keypoints;
-	//detector.detect(img, keypoints);
-
-	//cv::drawKeypoints(img, keypoints, img);
-
-	//cv::waitKey(20);
 }
