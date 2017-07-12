@@ -19,7 +19,7 @@ bool Kinect::initialize()
 	{
 		this->sensor->get_CoordinateMapper(&this->mapper);
 		this->sensor->Open();
-		this->sensor->OpenMultiSourceFrameReader(FrameSourceTypes::FrameSourceTypes_Depth | FrameSourceTypes::FrameSourceTypes_Color, &this->reader);
+		this->sensor->OpenMultiSourceFrameReader(FrameSourceTypes::FrameSourceTypes_Depth | FrameSourceTypes::FrameSourceTypes_Color | FrameSourceTypes_Infrared, &this->reader);
 		return true;
 	}
 	return false;
@@ -34,6 +34,7 @@ bool Kinect::fetch()
 	return false;
 }
 
+// get RGBA image, 8 bit
 void Kinect::getRgba(BYTE* buffer)
 {
 	IColorFrame* color = NULL;
@@ -47,11 +48,34 @@ void Kinect::getRgba(BYTE* buffer)
 	}
 }
 
+// get depth image, 16 bit
 void Kinect::getDepth(USHORT* buffer)
 {
 	IDepthFrame* depth = NULL;
 	IDepthFrameReference* depthRef = NULL;
 	this->frame->get_DepthFrameReference(&depthRef);
-	depthRef->AcquireFrame(&depth);
-	depth->CopyFrameDataToArray(DEPTH_WIDTH * DEPTH_HEIGHT, buffer);
+	if (SUCCEEDED(depthRef->AcquireFrame(&depth)))
+	{
+		depth->CopyFrameDataToArray(DEPTH_WIDTH * DEPTH_HEIGHT, buffer);
+		depthRef->Release();
+		depth->Release();
+		depthRef = nullptr;
+		depth = nullptr;
+	}
+}
+
+//get IR image
+void Kinect::getIR(USHORT* buffer)
+{
+	IInfraredFrame* IR = NULL;
+	IInfraredFrameReference* IRRef = NULL;
+	this->frame->get_InfraredFrameReference(&IRRef);
+	if (SUCCEEDED(IRRef->AcquireFrame(&IR)))
+	{
+		IR->CopyFrameDataToArray(IR_WIDTH * IR_HEIGHT, buffer);
+		IRRef->Release();
+		IR->Release();
+		IRRef = nullptr;
+		IR = nullptr;
+	}
 }
