@@ -96,6 +96,25 @@ void Kinect::depth2xyz() {
 		std::cout << buf[i] << "  ";
 		//std::cout << (int)depth2xyz[i] << std::endl;
 	}
+	/*
+	// Depth Camera characteristics
+	depthWidth = 320.0f;
+	depthHeight = 240.0f;
+	depthWidthHalf = depthWidth / 2.0f;
+	depthHeightHalf = depthHeight / 2.0f;
+	depthHFOV = 57.0f;
+	depthVFOV = 43.0f;
+	depthH = tan((depthHFOV / 2.0f) * (M_PI / 180.0f));
+	depthV = tan((depthVFOV / 2.0f) * (M_PI / 180.0f));
+
+	Vec3f realWorld(float depth, int lineNumber, int pixelNumber) {
+		Vec3f position;
+		position.x = depth * depthH * (pixelNumber / depthWidthHalf);
+		position.y = depth * depthV * (lineNumber / depthHeightHalf);
+		position.z = depth;
+		return position;
+	}
+	*/
 
 
 }
