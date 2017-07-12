@@ -8,7 +8,7 @@ Kinect::Kinect()
 	this->mapper = NULL;
 	this->colorData = new BYTE[COLOR_HEIGHT * COLOR_WIDTH * 4];
 	this->depthData = new USHORT[DEPTH_HEIGHT * DEPTH_WIDTH];
-	this->irData = new USHORT[IR_HEIGHT, IR_WIDTH];
+	this->irData = new USHORT[IR_HEIGHT * IR_WIDTH];
 }
 
 Kinect::~Kinect()
@@ -63,14 +63,12 @@ bool Kinect::fetch()
 			depthRef->Release();
 			depth->Release();
 		}
-		/*
 		if (SUCCEEDED(IRRef->AcquireFrame(&IR)))
 		{
 			IR->CopyFrameDataToArray(IR_WIDTH * IR_HEIGHT, this->irData);
 			IRRef->Release();
 			IR->Release();
 		}
-		*/
 		return true;
 	}
 	return false;
