@@ -23,7 +23,7 @@ class Kinect
 	ICoordinateMapper* mapper;
 	float X, Y, Z;
 	//IDepthFrame* depthframe;
-	CameraSpacePoint depth2xyz[DEPTH_WIDTH*DEPTH_HEIGHT];
+	CameraSpacePoint depth2xyz_arr[DEPTH_WIDTH*DEPTH_HEIGHT];
 
 
 	public:

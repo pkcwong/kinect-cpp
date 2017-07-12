@@ -90,7 +90,7 @@ void Kinect::depth2xyz() {
 
 	depthframe->AccessUnderlyingBuffer(&sz, &buf);
 
-	mapper->MapDepthFrameToCameraSpace(DEPTH_WIDTH*DEPTH_HEIGHT, buf, DEPTH_WIDTH*DEPTH_HEIGHT, depth2xyz);
+	mapper->MapDepthFrameToCameraSpace(DEPTH_WIDTH*DEPTH_HEIGHT, buf, DEPTH_WIDTH*DEPTH_HEIGHT, depth2xyz_arr);
 
 	for (int i = 0; i < DEPTH_WIDTH*DEPTH_HEIGHT; i++) {
 		std::cout << buf[i] << "  ";
