@@ -13,23 +13,15 @@
 
 #include <Kinect.h>
 
-class Kinect
+namespace kinect
 {
 
-	private:
-	IKinectSensor* sensor;
-	IMultiSourceFrame* frame;
-	IMultiSourceFrameReader* reader;
-	ICoordinateMapper* mapper;
-
-	public:
-	Kinect();
-	~Kinect();
 	bool initialize();
+	void close();
 	bool fetch();
-	void getRgba(BYTE* buffer);
-	void getDepth(USHORT* buffer);
-	void getIR(USHORT* buffer);
+	BYTE* getRgba();
+	USHORT* getDepth();
+	USHORT* getIr();
 
 };
 
