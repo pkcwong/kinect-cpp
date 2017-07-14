@@ -13,14 +13,18 @@ GLubyte data[COLOR_WIDTH * COLOR_HEIGHT * 4];
 
 int main(int argc, char* argv[])
 {
-	Kinect kinect;
-	kinect.initialize();
+	cv::BackgroundSubtractorMOG2 mog;
+	kinect::initialize();
 	while (1)
 	{
-		if (kinect.fetch())
+		if (kinect::fetch())
 		{
-			cv::Mat frame(COLOR_HEIGHT, COLOR_WIDTH, CV_8UC4, kinect.getRgba());
-			cv::imshow("Kinect", frame);
+			cv::Mat color(COLOR_HEIGHT, COLOR_WIDTH, CV_8UC4, kinect::getRgba());
+			cv::Mat gray;
+			cv::Mat mask;
+			cv::cvtColor(color, gray, CV_BGRA2GRAY);
+			mog(gray, mask, 0.01);
+			cv::imshow("mask", color);
 		}
 		cv::waitKey(30);
 	}
