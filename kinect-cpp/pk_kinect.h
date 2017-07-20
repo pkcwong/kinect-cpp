@@ -34,7 +34,7 @@ class Kinect
 	void getRgba(BYTE* buffer);
 	void getDepth(USHORT* buffer);
 	void getIR(USHORT* buffer);
-	void depth2xyz();
+	void depth2xyz(float depth, int lineNumber, int pixelNumber);
 
 };
 

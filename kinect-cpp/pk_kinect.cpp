@@ -51,7 +51,11 @@ void Kinect::getRgba(BYTE* buffer)
 	}
 }
 
-// get depth image, 16 bit
+// get depth data, 16 bit
+//Range : 0.5-4.5 meters
+//Resolution : ~1.5mm at 50cm / 5cm at 5m
+//Noise : +-1 DN at all depth    +-1mm at close   +-5cm at far
+//can't have the full view be < 50 cm
 void Kinect::getDepth(USHORT* buffer)
 {
 	IDepthFrame* depth = NULL;
@@ -67,7 +71,7 @@ void Kinect::getDepth(USHORT* buffer)
 	}
 }
 
-//get IR image
+//get IR data
 void Kinect::getIR(USHORT* buffer)
 {
 	IInfraredFrame* IR = NULL;
@@ -82,7 +86,7 @@ void Kinect::getIR(USHORT* buffer)
 		IR = nullptr;
 	}
 }
-void Kinect::depth2xyz() {
+void Kinect::depth2xyz(float depth, int lineNumber, int pixelNumber) {
 
 	IDepthFrame* depthframe;
 	unsigned int sz;
@@ -96,25 +100,24 @@ void Kinect::depth2xyz() {
 		std::cout << buf[i] << "  ";
 		//std::cout << (int)depth2xyz[i] << std::endl;
 	}
-	/*
+	
 	// Depth Camera characteristics
-	depthWidth = 320.0f;
-	depthHeight = 240.0f;
-	depthWidthHalf = depthWidth / 2.0f;
-	depthHeightHalf = depthHeight / 2.0f;
-	depthHFOV = 57.0f;
-	depthVFOV = 43.0f;
-	depthH = tan((depthHFOV / 2.0f) * (M_PI / 180.0f));
-	depthV = tan((depthVFOV / 2.0f) * (M_PI / 180.0f));
+	USHORT depthWidth = DEPTH_WIDTH;
+	USHORT depthHeight = DEPTH_HEIGHT;
+	USHORT depthWidthHalf = depthWidth / 2.0f;
+	USHORT depthHeightHalf = depthHeight / 2.0f;
+	//Field of View
+	USHORT depthHFOV = 57.0f;
+	USHORT depthVFOV = 43.0f;
+	USHORT depthH = tan((depthHFOV / 2.0f) * (M_PI / 180.0f));
+	USHORT depthV = tan((depthVFOV / 2.0f) * (M_PI / 180.0f));
 
-	Vec3f realWorld(float depth, int lineNumber, int pixelNumber) {
-		Vec3f position;
-		position.x = depth * depthH * (pixelNumber / depthWidthHalf);
-		position.y = depth * depthV * (lineNumber / depthHeightHalf);
-		position.z = depth;
-		return position;
-	}
-	*/
+	USHORT position_x;
+	USHORT position_y;
+	USHORT position_z;
 
-
+	position_x = depth * depthH * (pixelNumber / depthWidthHalf);
+	position_y = depth * depthV * (lineNumber / depthHeightHalf);
+	position_z = depth;
+	
 }
