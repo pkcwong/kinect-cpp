@@ -1,13 +1,6 @@
 #ifndef _PK_KINECT
 #define _PK_KINECT
 
-#define COLOR_WIDTH 1920
-#define COLOR_HEIGHT 1080
-#define DEPTH_WIDTH 512
-#define DEPTH_HEIGHT 424
-#define IR_WIDTH 512
-#define IR_HEIGHT 424
-
 #include <Windows.h>
 #include <Ole2.h>
 
@@ -15,6 +8,13 @@
 
 namespace kinect
 {
+
+	const int COLOR_WIDTH = 1920;
+	const int COLOR_HEIGHT = 1080;
+	const int DEPTH_WIDTH = 512;
+	const int DEPTH_HEIGHT = 424;
+	const int IR_WIDTH = 512;
+	const int IR_HEIGHT = 424;
 
 	bool initialize();
 	void close();
