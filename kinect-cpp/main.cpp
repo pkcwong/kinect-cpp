@@ -33,10 +33,9 @@ int main(int argc, char* argv[])
 			cv::cvtColor(frame, frame, cv::COLOR_BGR2HSV);
 			cv::inRange(frame, cv::Scalar(0, 100, 100), cv::Scalar(10, 255, 255), frame);
 			cv::medianBlur(frame, frame, 5);
-			mog(frame, mask, 0.05);
+			mog(frame, mask, 0.0);
 			
 			cv::findContours(mask, contours, cv::RETR_CCOMP, cv::CHAIN_APPROX_SIMPLE);
-			std::cout << contours.size() << "\n";
 			for (size_t i = 0; i != contours.size(); i++)
 			{
 				double area = contourArea(contours[i]);
@@ -48,6 +47,7 @@ int main(int argc, char* argv[])
 					rect = cv::boundingRect(contours[i]);
 				}
 			}
+			std::cout << "area: " << largest_area << "\n";
 			cv::drawContours(mask, contours, largest_contour_index, cv::Scalar(255, 255, 255), 10);
 			
 			cv::imshow("raw", raw);

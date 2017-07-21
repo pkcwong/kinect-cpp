@@ -6,6 +6,8 @@
 
 #include <Kinect.h>
 
+#include <opencv2/core/core.hpp>
+
 namespace kinect
 {
 
@@ -19,9 +21,13 @@ namespace kinect
 	bool initialize();
 	void close();
 	bool fetch();
+
 	BYTE* getRgba();
 	USHORT* getDepth();
 	USHORT* getIr();
+	cv::Mat getRgbaMat();
+	cv::Mat getDepthMat();
+	cv::Mat getIrMat();
 
 };
 

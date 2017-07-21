@@ -92,4 +92,19 @@ namespace kinect
 		return kinect::irData;
 	}
 
+	cv::Mat getRgbaMat()
+	{
+		return cv::Mat(COLOR_HEIGHT, COLOR_WIDTH, CV_8UC4, getRgba());
+	}
+
+	cv::Mat getDepthMat()
+	{
+		return cv::Mat(DEPTH_HEIGHT, DEPTH_WIDTH, CV_16U, getDepth());
+	}
+
+	cv::Mat getIrMat()
+	{
+		return cv::Mat(IR_HEIGHT, IR_WIDTH, CV_16U, getIr());
+	}
+
 }
